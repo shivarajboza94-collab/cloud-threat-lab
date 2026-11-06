@@ -1,0 +1,24 @@
+services:
+  api:
+    build: ./api
+    container_name: threat-api
+    ports:
+      - "5000:5000"
+    networks:
+      - backend-tier
+
+  worker:
+    build: ./worker
+    container_name: threat-worker
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64m
+    networks:
+      - backend-tier
+
+networks:
+  backend-tier:
+    name: threat-lab-net
+    driver: bridge

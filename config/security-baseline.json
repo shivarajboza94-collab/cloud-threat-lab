@@ -1,0 +1,11 @@
+{
+  "suppressions": [
+    {
+      "rule_id": "b2b-invoice-idor-audit",
+      "target_path": "/api/v1/invoices/inv-101",
+      "reason": "Legacy v1 API scheduled for deprecation in Q1 2027; protected upstream by WAF.",
+      "expires_at": "2025-01-01",
+      "approved_by": "security-lead@company.com"
+    }
+  ]
+}

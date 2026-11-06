@@ -1,0 +1,31 @@
+name: Security Audit & Baseline Quality Gate
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  nuclei-gatekeeper:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Run Audit & Generate Job Summary
+        run: |
+          chmod +x scripts/run_audit.sh
+          ./scripts/run_audit.sh
+
+      - name: Upload SARIF to GitHub Security Tab
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: results/nuclei-findings.sarif
+          category: nuclei-custom-audits

@@ -1,0 +1,26 @@
+id: b2b-invoice-secure-audit
+
+info:
+  name: Verify Hardened Tenant Isolation
+  author: security-team
+  severity: high
+  tags: idor,bola,api,auth
+
+http:
+  - method: GET
+    path:
+      - "{{BaseURL}}/api/v2/invoices/inv-101"
+
+    headers:
+      X-Tenant-ID: "tenant-b"
+
+    matchers-condition: and
+    matchers:
+      - type: status
+        status:
+          - 200
+
+      - type: word
+        words:
+          - '"tenant_id": "tenant-a"'
+        part: body
